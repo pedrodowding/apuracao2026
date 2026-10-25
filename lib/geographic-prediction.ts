@@ -51,6 +51,7 @@ export function geographicProjection(nation:Election|null,places:Record<string,E
    const localSD=.08*future;
    variance+=(2*localSD)**2 + 4*future*share*(1-share);
  }
+ if(remaining===0)return {...base,status:'closed',leading:1,trailing:0,coverage:28,pending:0,projectedGap:names[0].votes-names[1].votes,uncertainty:0,meanFinalVotes:[names[0].votes,names[1].votes],reason:'Todas as abrangências reportam zero eleitores pendentes.'};
  if(counted<1000)return {...base,reason:'Volume apurado ainda insuficiente para estimar a distribuição territorial.'};
  const predicted0=names[0].votes+additional0,predicted1=names[1].votes+additional1;
  const projectedGap=predicted0-predicted1;
