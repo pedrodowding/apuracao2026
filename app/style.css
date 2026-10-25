@@ -140,3 +140,8 @@ section[id]{scroll-margin-top:22px}
  .v7-app.tab-home .overview{display:block}
  .v7-app.tab-forecast .v7-forecast{display:block}
 }
+
+/* Candidate identity: independent of ballot order */
+.candidate-identity{border-top:3px solid;padding-top:10px}
+.candidate-identity small{font-weight:800}
+.candidate-identity strong,.probrow strong{font-variant-numeric:tabular-nums}
