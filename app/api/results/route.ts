@@ -12,7 +12,7 @@ export async function GET(request:NextRequest){
   const response=await fetch(url,{next:{revalidate:30},signal:AbortSignal.timeout(9000)});
   if(!response.ok)throw new Error(`TSE HTTP ${response.status}`);
   const data=await response.json();
-  if(!data||typeof data!=='object'||!Array.isArray(data.carper))throw new Error('Esquema inesperado da fonte oficial');
+  if(!data||typeof data!=='object'||!Array.isArray(data.carg))throw new Error('Esquema inesperado da fonte oficial');
   return NextResponse.json({source:url,receivedAt:new Date().toISOString(),data},{headers:{'Cache-Control':'public, s-maxage=25, stale-while-revalidate=30'}});
  }catch(e){return NextResponse.json({error:'Dados oficiais indisponíveis ou incompatíveis; nenhum valor será estimado.',detail:String(e),source:url},{status:503});}
 }
