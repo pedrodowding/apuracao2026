@@ -73,3 +73,62 @@ section[id]{scroll-margin-top:22px}
 @media(max-width:1050px){.regionclick{grid-template-columns:repeat(2,minmax(0,1fr))}.stategrid{grid-template-columns:repeat(3,minmax(0,1fr))}.citygrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.regionclick,.stategrid,.citygrid{grid-template-columns:repeat(2,minmax(0,1fr))}.kpis.three{grid-template-columns:1fr}.probrow strong{font-size:24px}.regionbutton{padding:14px}}
 @media(max-width:400px){.regionclick,.stategrid,.citygrid{grid-template-columns:1fr}}
+
+/* V7: Mobile-first editorial dashboard */
+.v7-mobile-heading,.v7-bottomnav,.mobile-context{display:none}
+.forecast-hero{background:linear-gradient(135deg,#12243e,#102b35);border-color:#3d7582}
+.modelbadge{display:inline-flex;font-size:11px;color:#9bdaca;border:1px solid #367a76;background:#173c42;border-radius:18px;padding:5px 11px;margin-bottom:12px}
+.forecast-data{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.forecast-data>div{padding:11px;border-radius:10px;background:#172f43}
+.forecast-data small{display:block;color:#a8bdd0;font-size:11px}
+.forecast-data b{display:block;font-size:17px;margin-top:4px}
+.forecast-loading{font-weight:750;color:#9cc1ee;background:#1a344d;border-radius:9px;padding:15px}
+.method{border-top:1px solid #36506c;margin-top:18px;padding-top:12px;color:#aabdd4;font-size:12px}
+.method summary{cursor:pointer;font-weight:700;color:#c8e0ff;padding:5px 0}
+.method p{margin:8px 0}
+@media(max-width:750px){
+  main{padding:14px 12px 95px}
+  .top{padding-bottom:14px}
+  .top h1{font-size:29px;letter-spacing:-1.1px;margin:7px 0}
+  .top p{font-size:12px}
+  .top .live{font-size:10px;padding:7px 11px}
+  .controls{margin:12px 0 16px;gap:8px}
+  .controls .control{flex:1;min-width:0}
+  .controls select{width:100%;min-width:0;max-width:none}
+  .controls .refresh{padding:12px;border-radius:10px;font-size:0;gap:0}
+  .controls .refresh svg{width:18px}
+  .controls .refreshnote{display:none}
+  .mobile-context{display:none}
+  .v7-mobile-heading{display:flex;align-items:center;justify-content:space-between;margin:18px 4px 8px;gap:12px}
+  .v7-mobile-heading b{font-size:17px;letter-spacing:-.3px}
+  .v7-mobile-heading span{font-size:10px;color:#9aadc5;text-align:right}
+  .v7-app section{display:none}
+  .v7-app.tab-home .v7-home,.v7-app.tab-explore .v7-explore,.v7-app.tab-forecast .v7-forecast,.v7-app.tab-history .v7-history{display:block}
+  .v7-app.tab-home .two.v7-home{display:grid;grid-template-columns:1fr}
+  .v7-app .overview,.v7-app .panel{margin:10px 0;border-radius:14px;padding:18px}
+  .v7-app .sectionhead{margin-bottom:14px}
+  .v7-app h2{font-size:19px}
+  .v7-app .eyebrow{font-size:10px;letter-spacing:1px}
+  .v7-app .overview .sectionhead{gap:12px}
+  .v7-app .overview .timestamp{font-size:11px}
+  .v7-app .kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:14px}
+  .v7-app .kpis article{padding:13px}
+  .v7-app .kpis strong{font-size:clamp(19px,6vw,27px)}
+  .v7-app .kpis small{font-size:11px}
+  .v7-app .regionclick{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .v7-app .regioncard{padding:13px}
+  .v7-app .regionbutton strong{font-size:22px}
+  .v7-app .stategrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .v7-app .statecard{padding:12px}
+  .v7-app .statecard strong{font-size:20px}
+  .v7-app .citygrid{grid-template-columns:1fr;gap:7px;max-height:60vh}
+  .v7-app .cityitem{min-height:45px}
+  .v7-app .probrow strong{font-size:clamp(25px,8vw,34px)}
+  .v7-app .kpis.three{grid-template-columns:1fr}
+  .v7-bottomnav{display:grid;grid-template-columns:repeat(4,1fr);position:fixed;z-index:100;bottom:0;left:0;right:0;padding:8px 8px calc(8px + env(safe-area-inset-bottom));background:rgba(11,23,39,.96);border-top:1px solid #365171;box-shadow:0 -8px 30px #030912ab;backdrop-filter:blur(16px)}
+  .v7-bottomnav button{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;border:0;background:transparent;color:#93a9c6;padding:7px 2px;border-radius:9px;font-size:11px;min-height:49px}
+  .v7-bottomnav button[aria-current=page]{color:#d5e9ff;background:#1c3c60;font-weight:700}
+  footer{font-size:11px}
+}
+@media(max-width:370px){.v7-app .regionclick,.v7-app .stategrid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.regionbutton,.statecard{transition:none}}
