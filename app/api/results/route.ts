@@ -7,7 +7,9 @@ export async function GET(request:NextRequest){
  const election=process.env.TSE_ELECTION_ID||'6258';
  if(!/^\d{4,6}$/.test(election))return NextResponse.json({error:'ID de eleição inválido'},{status:500});
  const code=election.padStart(6,'0');
- const url=`https://resultados.tse.jus.br/oficial/ele2026/${election}/dados/${uf}/${uf}-c0001-e${code}-u.json`;
+ const city=request.nextUrl.searchParams.get('city');
+ if(city!==null&&(!/^[0-9]{5}$/.test(city)||uf==='br'))return NextResponse.json({error:'Município inválido'},{status:400});
+ const url=`https://resultados.tse.jus.br/oficial/ele2026/${election}/dados/${uf}/${uf}${city||''}-c0001-e${code}-u.json`;
  try{
   const response=await fetch(url,{next:{revalidate:30},signal:AbortSignal.timeout(9000)});
   if(!response.ok)throw new Error(`TSE HTTP ${response.status}`);
