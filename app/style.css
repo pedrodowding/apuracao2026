@@ -192,3 +192,28 @@ section[id]{scroll-margin-top:22px}
 .curves-sensitivity input{width:100%;accent-color:#78aef0}
 .curves-verdict{padding:14px;border-radius:10px;background:#1c344a;border:1px solid #456585;color:#d9eaff;font-weight:750}
 @media(max-width:750px){.v7-app.tab-curves .curves-panel{display:block}.v7-bottomnav{overflow-x:auto;justify-content:space-around}.v7-bottomnav button{min-width:62px;flex:1}.curves-chart svg{height:245px}.curves-metrics{grid-template-columns:1fr 1fr}.curves-metrics>div:last-child{grid-column:1/-1}.curves-projected{grid-template-columns:1fr}.curves-panel{padding:15px}}
+
+/* V12 mobile: stable four-item navigation, readable forecast, honest chart */
+.curves-notice{font-size:12px;line-height:1.5;color:#b5c9e1;background:#142b43;border-left:3px solid #6b9fe5;border-radius:7px;padding:11px 13px;margin:12px 0}
+.curves-projection-toggle{display:flex;align-items:center;gap:9px;color:#b8cee6;font-size:12px;font-weight:650;margin-bottom:12px}
+.curves-projection-toggle input{accent-color:#76adfa;width:16px;height:16px;flex:none}
+.forecast-explainer{font-size:12px;line-height:1.5;color:#b9cde2;margin:0 0 14px}
+.probrow>div{min-width:0}
+.probrow strong{overflow-wrap:normal;word-break:normal;hyphens:none}
+@media(max-width:750px){
+ .v7-bottomnav{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;overflow:visible!important;gap:3px;align-items:stretch;justify-content:stretch;padding:6px 8px calc(6px + env(safe-area-inset-bottom))}
+ .v7-bottomnav button{width:100%;min-width:0!important;max-width:none;min-height:54px;gap:3px;font-size:11px;padding:6px 1px}
+ .v7-bottomnav button span{display:block;white-space:nowrap;font-size:11px}
+ .v7-app.tab-curves .v7-curves{display:block}
+ .v7-app .probrow{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .v7-app .probrow>div{padding:12px 10px}
+ .v7-app .probrow strong{font-size:clamp(17px,4.8vw,23px)!important;line-height:1.2;letter-spacing:-.5px}
+ .v7-app .probrow small{font-size:11px;line-height:1.3;overflow-wrap:anywhere}
+ .curves-chart{padding:4px;border-radius:12px}
+ .curves-chart svg{height:auto!important;aspect-ratio:760/295}
+ .curves-panel .sectionhead h2{font-size:19px}
+ .curves-legend{gap:8px 14px}
+ .curves-legend span{font-size:11px}
+ .curves-projected strong{font-size:clamp(20px,6vw,26px)}
+ .v7-app.tab-curves .curves-panel{display:block}
+}
