@@ -18,7 +18,8 @@ export default function ProjectionCurves({nation,places,history,uf,citySelected}
   const validStates=keys.map(k=>places[k]);
   if(validStates.some(e=>!e||e.pendingElectors===null||e.eligible===null))return {kind:'unavailable' as const,reason:'A projeção territorial exige as 27 UFs e o exterior com eleitores pendentes consistentes.'};
   let totalPending=0,forecastA=0,forecastB=0,lowA=0,highA=0,remainingValid=0;
-  for(const e of validStates){
+  for(const maybe of validStates){
+   const e=maybe!;
    const v0=e.candidates.find(c=>c.number===a.number)?.votes||0;
    const v1=e.candidates.find(c=>c.number===b.number)?.votes||0;
    const valid=v0+v1,pend=e.pendingElectors!;
