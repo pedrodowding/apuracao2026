@@ -217,3 +217,14 @@ section[id]{scroll-margin-top:22px}
  .curves-projected strong{font-size:clamp(20px,6vw,26px)}
  .v7-app.tab-curves .curves-panel{display:block}
 }
+
+/* V13: conditional winner chances */
+.chance-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0}
+.chance-card{border:1px solid #37536e;border-top:4px solid #6b9ff5;background:#182b43;border-radius:12px;padding:15px;min-width:0}
+.chance-card small{display:block;color:#d2deed;font-size:12px;font-weight:800;line-height:1.35;overflow-wrap:anywhere}
+.chance-card strong{display:block;font-size:clamp(32px,4vw,48px);letter-spacing:-1.8px;line-height:1.1;margin:12px 0 4px;font-variant-numeric:tabular-nums}
+.chance-card>span{display:block;color:#a9bfd9;font-size:11px}
+.chance-track{height:7px;background:#293d57;border-radius:12px;overflow:hidden;margin-top:14px}
+.chance-track span{display:block;height:100%;border-radius:12px}
+.chance-explainer{color:#a9bfd8;font-size:12px;line-height:1.5;margin:10px 0 16px}
+@media(max-width:750px){.chance-cards{gap:9px}.chance-card{padding:12px}.chance-card strong{font-size:clamp(29px,8vw,42px)}.chance-card small{font-size:11px}}
