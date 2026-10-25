@@ -13,17 +13,20 @@ export type Projection={
   projectedGap:number|null;uncertainty:number|null;
   meanFinalVotes:[number,number]|null;
   assumptions:string;
+  intervalGap:[number,number]|null;
+  stability:'high'|'medium'|'low'|'unknown';
+  sensitivity:[number,number]|null;
 };
 const keys=['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO','ZZ'];
 const erf=(x:number)=>{const sign=x<0?-1:1;const a=Math.abs(x),t=1/(1+.3275911*a);return sign*(1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-.284496736)*t+.254829592)*t*Math.exp(-a*a))};
 const cdf=(x:number)=>.5*(1+erf(x/Math.SQRT2));
 export function geographicProjection(nation:Election|null,places:Record<string,Election>):Projection{
  const names=nation?.candidates||[];
- const base:Projection={status:'unavailable',leadingName:names[0]?.name||'Candidato líder',trailingName:names[1]?.name||'Segundo candidato',leading:null,trailing:null,reason:'Aguardando resultados oficiais.',coverage:keys.filter(k=>Boolean(places[k])).length,pending:0,projectedGap:null,uncertainty:null,meanFinalVotes:null,assumptions:'Modelo condicional com estratificação por 27 UFs e exterior; não foi calibrado com eleições históricas.'};
+ const base:Projection={status:'unavailable',leadingName:names[0]?.name||'Candidato líder',trailingName:names[1]?.name||'Segundo candidato',leading:null,trailing:null,reason:'Aguardando resultados oficiais.',coverage:keys.filter(k=>Boolean(places[k])).length,pending:0,projectedGap:null,uncertainty:null,meanFinalVotes:null,intervalGap:null,stability:'unknown',sensitivity:null,assumptions:'Modelo condicional com estratificação por 27 UFs e exterior; não foi calibrado com eleições históricas.'};
  if(!nation||names.length!==2)return base;
  const math=getMath(nation);
  if(math?.pendingUpper===0||math?.status.startsWith('irreversível')){
-   return {...base,status:'closed',leading:1,trailing:0,reason:'Vitória matematicamente assegurada pelo teto de eleitores pendentes.',pending:math.pendingUpper||0,projectedGap:names[0].votes-names[1].votes,uncertainty:0,meanFinalVotes:[names[0].votes,names[1].votes]};
+   return {...base,status:'closed',leading:1,trailing:0,reason:'Vitória matematicamente assegurada pelo teto de eleitores pendentes.',pending:math.pendingUpper||0,projectedGap:names[0].votes-names[1].votes,uncertainty:0,intervalGap:[names[0].votes-names[1].votes,names[0].votes-names[1].votes],stability:'high',sensitivity:[1,1],meanFinalVotes:[names[0].votes,names[1].votes]};
  }
  if(keys.some(k=>!places[k]))return {...base,reason:'Aguardando as 27 UFs e o exterior para fazer uma projeção geográfica completa.'};
  if(keys.some(k=>places[k].pendingElectors===null||places[k].candidates.length!==2))return {...base,reason:'Há localidades sem eleitorado pendente ou candidatos identificados.'};
@@ -51,13 +54,19 @@ export function geographicProjection(nation:Election|null,places:Record<string,E
    const localSD=.08*future;
    variance+=(2*localSD)**2 + 4*future*share*(1-share);
  }
- if(remaining===0)return {...base,status:'closed',leading:1,trailing:0,coverage:28,pending:0,projectedGap:names[0].votes-names[1].votes,uncertainty:0,meanFinalVotes:[names[0].votes,names[1].votes],reason:'Todas as abrangências reportam zero eleitores pendentes.'};
+ if(remaining===0)return {...base,status:'closed',leading:1,trailing:0,coverage:28,pending:0,projectedGap:names[0].votes-names[1].votes,uncertainty:0,intervalGap:[names[0].votes-names[1].votes,names[0].votes-names[1].votes],stability:'high',sensitivity:[1,1],meanFinalVotes:[names[0].votes,names[1].votes],reason:'Todas as abrangências reportam zero eleitores pendentes.'};
  if(counted<1000)return {...base,reason:'Volume apurado ainda insuficiente para estimar a distribuição territorial.'};
  const predicted0=names[0].votes+additional0,predicted1=names[1].votes+additional1;
  const projectedGap=predicted0-predicted1;
  variance+=(2*.03*(additional0+additional1))**2;
  const sd=Math.sqrt(Math.max(variance,1));
  const chance=cdf(projectedGap/sd);
+ const sdLow=Math.sqrt(Math.max(1,variance-(2*.03*(additional0+additional1))**2+(2*.015*(additional0+additional1))**2));
+ const sdHigh=Math.sqrt(Math.max(1,variance-(2*.03*(additional0+additional1))**2+(2*.06*(additional0+additional1))**2));
+ const probabilities=[cdf(projectedGap/sdLow),cdf(projectedGap/sdHigh)];
+ const sensitivity:[number,number]=[Math.min(...probabilities),Math.max(...probabilities)];
+ const intervalGap:[number,number]=[projectedGap-1.96*sd,projectedGap+1.96*sd];
+ const stability=intervalGap[0]>0||intervalGap[1]<0?'high':Math.abs(projectedGap)>sd?'medium':'low';
  const prob=Math.max(0,Math.min(1,chance));
- return {...base,status:'conditional',leading:prob,trailing:1-prob,coverage:28,pending:remaining,projectedGap,uncertainty:sd,meanFinalVotes:[predicted0,predicted1],reason:'Estimativa condicional por abrangência. Votos pendentes não constituem amostra aleatória.',assumptions:'Para cada UF e exterior: participação válida futura igual à observada localmente; preferência futura igual à proporção local apurada, com 8 p.p. de incerteza territorial e 3 p.p. de incerteza comum. Normal aproximada sobre a diferença projetada. Parâmetros não calibrados historicamente; não interpretar como probabilidade eleitoral validada.'};
+ return {...base,status:'conditional',leading:prob,trailing:1-prob,coverage:28,pending:remaining,projectedGap,uncertainty:sd,intervalGap,stability,sensitivity,meanFinalVotes:[predicted0,predicted1],reason:'Estimativa condicional por abrangência. Votos pendentes não constituem amostra aleatória.',assumptions:'Para cada UF e exterior: participação válida futura igual à observada localmente; preferência futura igual à proporção local apurada, com 8 p.p. de incerteza territorial e 3 p.p. de incerteza comum. Normal aproximada sobre a diferença projetada. Faixa de sensibilidade calculada alterando a incerteza comum de 1,5 a 6 pontos percentuais; intervalo de diferença aproximado de 95%. Parâmetros não calibrados historicamente; não interpretar como probabilidade eleitoral validada.'};
 }
