@@ -3,7 +3,6 @@ import {useEffect,useMemo,useRef,useState} from 'react';
 import {Activity,ArrowLeft,BarChart3,ChevronRight,Clock3,Globe2,MapPinned,RefreshCw,Search,ShieldCheck,TrendingUp} from 'lucide-react';
 import {Election,parseElection,getMath,regions,ufNames} from '../lib/election';
 import {probabilityModel} from '../lib/probability';
-import {scenarioAnalysis} from '../lib/scenarios';
 
 const fmt=(v:number|null|undefined)=>v==null?'—':v.toLocaleString('pt-BR');
 const pct=(v:number|null|undefined)=>v==null?'—':v.toLocaleString('pt-BR',{maximumFractionDigits:2})+'%';
@@ -31,7 +30,7 @@ export default function Home(){
  useEffect(()=>{try{const value=JSON.parse(localStorage.getItem('apuracao2026-history-'+uf+(city?.code||''))||'[]');setHistory(Array.isArray(value)?value:[])}catch{setHistory([])}},[uf,city?.code]);
  useEffect(()=>{if(!data||data.candidates.length!==2)return;const entry:Snapshot={t:data.updated||received,a:data.candidates[0].votes,b:data.candidates[1].votes};const key='apuracao2026-history-'+uf+(city?.code||'');setHistory(old=>{if(old.some(x=>x.a===entry.a&&x.b===entry.b))return old;const next=[...old,entry].slice(-90);try{localStorage.setItem(key,JSON.stringify(next))}catch{}return next})},[data,uf,city?.code,received]);
  const c=data?.candidates||[],a=c[0],b=c[1],math=useMemo(()=>data?getMath(data):null,[data]);
- const probability=useMemo(()=>probabilityModel(data),[data]),scenario=useMemo(()=>scenarioAnalysis(data),[data]);
+ const probability=useMemo(()=>probabilityModel(data),[data]);
  const reference=nation?.candidates||[],voteByNumber=(e:Election,key:string)=>e.candidates.find(c=>c.number===key)?.votes||0;
  const territoriesView=territories.map(([name,keys])=>{const available=keys.map(k=>all[k]).filter((x):x is Election=>!!x);const valid=available.reduce((n,e)=>n+(e.validVotes||0),0);const va=available.reduce((n,e)=>n+(reference[0]?voteByNumber(e,reference[0].number):0),0);const vb=available.reduce((n,e)=>n+(reference[1]?voteByNumber(e,reference[1].number):0),0);const st=available.reduce((n,e)=>n+(e.sectionsTotal||0),0),sc=available.reduce((n,e)=>n+(e.sectionsCounted||0),0);return {name,keys,available:available.length,valid,va,vb,sections:st?100*sc/st:null}});
  const list=states.filter(k=>region==='Todas'||regions[region]?.includes(k));
