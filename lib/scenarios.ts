@@ -3,8 +3,8 @@ import type {Election} from './election';
 // Scenario arithmetic only. Not a forecast or a probability of winning.
 export type Scenario={share:number,additionalTrailing:number,additionalLeading:number,finalGap:number};
 export function scenarioAnalysis(e:Election|null){
- if(!e||e.candidates.length!==2||e.eligible===null||e.turnout===null||e.eligible<e.turnout)return null;
- const remaining=e.eligible-e.turnout;
+ if(!e||e.candidates.length!==2||e.pendingElectors===null)return null;
+ const remaining=e.pendingElectors!;
  const gap=e.candidates[0].votes-e.candidates[1].votes;
  if(!Number.isSafeInteger(remaining)||!Number.isSafeInteger(gap)||remaining<0)return null;
  const shares=[0,25,40,50,60,75,100];
