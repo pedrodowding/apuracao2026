@@ -2,7 +2,7 @@
 import {useEffect,useMemo,useState} from 'react';
 import {Election,getMath,parseElection,regions,ufNames} from '../lib/election';
 import {scenarioAnalysis} from '../lib/scenarios';
-import {Activity,ArrowDownRight,ArrowUpRight,BarChart3,Clock3,Globe2,MapPinned,RefreshCw,ShieldCheck,SlidersHorizontal,TrendingUp} from 'lucide-react';
+import {Activity,BarChart3,Clock3,Globe2,MapPinned,RefreshCw,ShieldCheck,SlidersHorizontal,TrendingUp} from 'lucide-react';
 const fmt=(n:number|null|undefined)=>n==null?'—':n.toLocaleString('pt-BR');
 const pct=(n:number|null|undefined)=>n==null?'—':n.toLocaleString('pt-BR',{maximumFractionDigits:2})+'%';
 const UFS=Object.keys(ufNames).filter(x=>x!=='BR');
@@ -19,7 +19,7 @@ export default function Home(){
  const math=useMemo(()=>data?getMath(data):null,[data]),scenarios=useMemo(()=>scenarioAnalysis(data),[data]);
  const candidates=data?.candidates||[];const first=candidates[0],second=candidates[1];
  const gap=first&&second?first.votes-second.votes:null;
- const nationalNames=useMemo(()=>{const c=states.BR?.candidates||data?.uf==='BR'&&data?.candidates||[];return c.length===2?c.map(x=>x.name):[]},[states,data]);
+ const nationalNames=useMemo(()=>{const c=data?.uf==='BR'?data.candidates:[];return c.length===2?c.map(x=>x.name):[]},[data]);
  const summaries=Object.entries(regions).map(([name,keys])=>{const rows=keys.map(k=>states[k]).filter((x):x is Election=>Boolean(x));const s=empty(keys.length);s.covered=rows.length;for(const row of rows){s.valid+=row.validVotes||0;if(row.candidates.length===2){const [a,b]=nationalNames.length===2?nationalNames.map(n=>row.candidates.find(c=>c.name===n)?.votes||0):row.candidates.map(c=>c.votes);s.votes[0]+=a;s.votes[1]+=b}}const total=rows.reduce((n,e)=>n+(e.sectionsTotal||0),0);s.sections=total?100*rows.reduce((n,e)=>n+(e.sectionsCounted||0),0)/total:null;return {name,...s}});
  const selected=Object.entries(states).filter(([k])=>region==='Todas'||regions[region]?.includes(k)).sort(([a],[b])=>ufNames[a].localeCompare(ufNames[b]));
  const simulated=scenarios?Math.round(scenarios.remaining*share/100):null;
