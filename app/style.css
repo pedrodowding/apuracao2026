@@ -132,3 +132,11 @@ section[id]{scroll-margin-top:22px}
 }
 @media(max-width:370px){.v7-app .regionclick,.v7-app .stategrid{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.regionbutton,.statecard{transition:none}}
+
+@media(max-width:750px){
+ .v7-app.tab-forecast .two.v7-home{display:grid;grid-template-columns:1fr}
+ .v7-app.tab-forecast .two.v7-home>article:first-child{display:none}
+ .v7-app.tab-forecast .two.v7-home .forecast-hero{display:block}
+ .v7-app.tab-home .overview{display:block}
+ .v7-app.tab-forecast .v7-forecast{display:block}
+}
