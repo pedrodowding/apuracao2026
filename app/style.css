@@ -217,3 +217,68 @@ section[id]{scroll-margin-top:22px}
  .curves-projected strong{font-size:clamp(20px,6vw,26px)}
  .v7-app.tab-curves .curves-panel{display:block}
 }
+
+/* V14: observatório de zonas e seções eleitorais */
+.forensic{min-width:0}
+.forensic-heading{display:flex;justify-content:space-between;align-items:start;gap:16px;margin-bottom:12px}
+.forensic-heading h3{font-size:clamp(19px,2.5vw,25px);line-height:1.2;letter-spacing:-.5px;margin:5px 0 0;color:#f0f6ff}
+.forensic-source-tag{font-size:10px;font-weight:800;letter-spacing:.3px;color:#a7caec;background:#1d3852;border:1px solid #3d6387;border-radius:20px;padding:6px 10px;white-space:nowrap}
+.forensic-intro{font-size:13px;line-height:1.7;max-width:850px;margin-bottom:18px}
+.forensic-tabs{display:flex;gap:5px;border-bottom:1px solid #2e4663;margin:16px 0 20px}
+.forensic-tabs button{display:flex;align-items:center;justify-content:center;gap:8px;border:0;border-bottom:3px solid transparent;background:transparent;padding:11px 15px;color:#a4b9d3;font-weight:800;font-size:13px}
+.forensic-tabs button.active{border-bottom-color:#8bb8ed;color:#f0f7ff}
+.forensic-tabs button:hover{background:#1c3350}
+.forensic-filters,.forensic-controls{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px;margin-bottom:16px}
+.forensic-filters{padding:14px;background:#102338;border:1px solid #294361;border-radius:12px}
+.forensic-filters label,.forensic-controls label{display:flex;flex:1 1 170px;min-width:0;flex-direction:column;gap:7px;color:#a9c1da;font-size:11px;font-weight:750}
+.forensic-filters select,.forensic-controls select,.forensic-controls input{height:42px;width:100%;max-width:100%;min-width:0;border:1px solid #476282;background:#152b45;color:#eaf3ff;border-radius:9px;padding:0 11px;font-family:inherit;font-size:13px}
+.forensic-controls input::placeholder{color:#8babc8}
+.forensic-controls label:first-child{flex-grow:1}
+.forensic-primary,.forensic-secondary{height:42px;display:inline-flex;justify-content:center;align-items:center;gap:7px;border-radius:9px;border:1px solid #5487c1;background:#2c6098;color:#fff;font-size:12px;font-weight:800;padding:0 17px;white-space:nowrap;cursor:pointer}
+.forensic-secondary{background:#203e5d;border-color:#55708d}
+.forensic-primary:disabled,.forensic-secondary:disabled{opacity:.5;cursor:not-allowed}
+.forensic-controls.compact{margin:15px 0 12px}
+.forensic-controls.compact label{flex-basis:155px}
+.forensic-empty,.forensic-warning{font-size:13px;line-height:1.55;border-radius:10px;padding:16px;margin:12px 0;background:#142b45;border:1px dashed #416183;color:#a9c4e0}
+.forensic-warning{border:1px solid #856f48;background:#3a2c21;color:#ffe4b9}
+.forensic-coverage{display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:7px;margin:18px 0 10px}
+.forensic-coverage b{font-size:14px;color:#e6f3ff}
+.forensic-coverage span{font-size:11px;color:#abc4df}
+.forensic-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:12px 0 20px}
+.forensic-kpis>div{min-width:0;padding:14px;background:#182f4c;border:1px solid #355373;border-radius:11px}
+.forensic-kpis small{display:block;color:#abc4df;font-size:11px;line-height:1.35}
+.forensic-kpis strong{display:block;margin:8px 0 4px;color:#f2f8ff;font-size:clamp(21px,2.5vw,28px);font-variant-numeric:tabular-nums;overflow-wrap:anywhere;letter-spacing:-.7px}
+.forensic-kpis span{display:block;font-size:10px;line-height:1.4;color:#96b2d0}
+.forensic-rows{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin:12px 0}
+.forensic-row{min-width:0;background:#132740;border:1px solid #304c6b;border-radius:12px;padding:14px}
+.forensic-rowhead{display:flex;gap:9px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px}
+.forensic-rowhead b{font-size:13px;color:#ebf5ff}
+.forensic-rowhead span{font-size:10px;color:#a8c0da;overflow-wrap:anywhere}
+.forensic-rowhead a{display:inline-flex;gap:4px;align-items:center;color:#a7d0ff;font-size:11px;white-space:nowrap}
+.forensic-votebar{height:10px;border-radius:8px;overflow:hidden;display:flex;background:#273a54;margin-bottom:8px}
+.forensic-votebar span{display:block;height:100%}
+.forensic-duo{display:flex;gap:5px;justify-content:space-between;align-items:center;flex-wrap:wrap;font-size:11px;font-weight:800;font-variant-numeric:tabular-nums;margin-bottom:12px}
+.forensic-rowmetrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;border-top:1px solid #2c4764;padding-top:11px}
+.forensic-rowmetrics span{display:flex;flex-direction:column;gap:3px;color:#95b0cd;font-size:10px;line-height:1.35}
+.forensic-rowmetrics b{font-size:14px;color:#f2f7ff;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.forensic .footnote{line-height:1.7}
+.forensic .footnote a{display:inline-flex;align-items:center;gap:3px;color:#9ecaff}
+.forensic-official-reference{display:flex;gap:10px;align-items:start;background:#142c45;border:1px solid #3b5978;border-radius:12px;padding:14px;margin:12px 0 18px;color:#b0c8e1}
+.forensic-official-reference>svg{flex:none;margin-top:2px}
+.forensic-official-reference b{color:#ecf7ff;font-size:12px}
+.forensic-official-reference p{font-size:12px;line-height:1.6;margin:6px 0}
+.forensic-official-reference a{display:inline-flex;align-items:center;gap:5px;color:#a9d3ff;font-size:11px;font-weight:800}
+.forensic-upload-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0}
+.forensic-upload{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;min-height:148px;padding:18px;text-align:center;border:1px dashed #5b83a8;background:#142b44;color:#d9eaff;border-radius:13px;cursor:pointer;position:relative;min-width:0}
+.forensic-upload b{font-size:14px}
+.forensic-upload small{font-size:11px;line-height:1.35;color:#aac0d9;word-break:break-word}
+.forensic-upload>span{font-size:11px;font-weight:800;color:#9fd2ff}
+.forensic-upload input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.forensic-upload:focus-within{outline:2px solid #7eb5f8;outline-offset:2px}
+.forensic-progress{height:6px;border-radius:6px;background:#29445f;overflow:hidden}
+.forensic-progress span{display:block;height:100%;background:#62b4fc;transition:width .15s}
+.forensic-note{font-size:12px;line-height:1.55;color:#a9c5e0}
+.forensic-disclaimer{font-size:12px;line-height:1.65;padding:13px 15px;margin:18px 0 0;background:#102339;color:#a1b9d1;border-left:3px solid #527caa;border-radius:7px}
+.forensic-disclaimer b{color:#d0e2f7}
+@media(max-width:850px){.forensic-rows{grid-template-columns:1fr}.forensic-filters label{flex:1 1 150px}}
+@media(max-width:650px){.forensic-heading{gap:8px}.forensic-heading h3{font-size:19px}.forensic-source-tag{font-size:9px;padding:5px 7px}.forensic-tabs button{flex:1;font-size:11px;padding:11px 4px;gap:5px}.forensic-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.forensic-kpis>div:last-child{grid-column:1/-1}.forensic-filters,.forensic-controls{gap:8px}.forensic-filters label,.forensic-controls label{flex-basis:135px}.forensic-controls .forensic-primary{width:100%}.forensic-row{padding:12px}.forensic-rowmetrics b{font-size:13px}.forensic-upload-grid{gap:8px}.forensic-upload{padding:12px;min-height:135px}}
