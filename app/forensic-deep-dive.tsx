@@ -8,9 +8,9 @@ type City={code:string;name:string;ibge:string};
 type Zone={zone:string;first:number;second:number;valid:number;turnout:number|null;eligible:number|null;sectionsCounted:number|null;sectionsTotal:number|null;source:string};
 type ZonePayload={uf:string;city:string;cityName:string;round:1|2;zones:Zone[];requested:number;totalZones:number;missing:string[];truncated:boolean;source:string;receivedAt:string};
 type ZoneRow=Zone&{share:number;deviation:number;relativeImpact:number;deltaMargin:number|null;deltaShare:number|null;exclusive:'Lula'|'Flávio'|null;complete:boolean};
-const fmt=(n:number|null|undefined)=>n==null?'—':Math.round(n).toLocaleString('pt-BR');
-const signed=(n:number|null|undefined)=>n==null?'—':(n>0?'+':'')+fmt(n);
-const pct=(n:number|null|undefined)=>n==null?'—':n.toLocaleString('pt-BR',{maximumFractionDigits:1})+'%';
+const fmt=(n:number|null|undefined)=>n==null?'N/D':Math.round(n).toLocaleString('pt-BR');
+const signed=(n:number|null|undefined)=>n==null?'N/D':(n>0?'+':'')+fmt(n);
+const pct=(n:number|null|undefined)=>n==null?'N/D':n.toLocaleString('pt-BR',{maximumFractionDigits:1})+'%';
 const SOURCE='https://dadosabertos.tse.jus.br/dataset/resultados-2026';
 const TSE_REPORT='https://www.justicaeleitoral.jus.br/fato-ou-boato/checagens/2026/e-falso-que-124-mil-urnas-tenham-registrado-votos-apenas-para-lula-no-2o-turno-das-eleicoes-2026';
 const C13='#e53d4d',C22='#398dff';
@@ -107,6 +107,7 @@ export default function ForensicDeepDive({currentUf,nation}:{currentUf:string;na
   const blob=new Blob(['\uFEFF'+rows],{type:'text/csv;charset=utf-8'});
   const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='analise-secoes-'+selectedUf+'.csv';a.click();URL.revokeObjectURL(url);
  };
+ const nationalGap=nation?((nation.candidates.find(c=>c.number==='13')?.votes||0)-(nation.candidates.find(c=>c.number==='22')?.votes||0)):0;
  const cityOptions=cities.filter(c=>c.name.toLocaleLowerCase('pt-BR').includes(cityFilter.toLocaleLowerCase('pt-BR'))||c.code===city).slice(0,100);
  return <div className="forensic">
   <div className="forensic-heading"><div><div className="eyebrow">OBSERVATÓRIO DE PADRÕES</div><h3>Votações extremas e impactos territoriais</h3></div><span className="forensic-source-tag">Fonte: TSE</span></div>
@@ -152,7 +153,7 @@ export default function ForensicDeepDive({currentUf,nation}:{currentUf:string;na
     <p className="footnote">Desvio em p.p. = porcentagem de Lula na zona − porcentagem de Lula nas zonas consultadas do município (entre votos 13 e 22). Impacto relativo = saldo real (13 − 22) menos saldo esperado se a zona tivesse a proporção média municipal, mantendo seu total de votos. Impactos positivos favorecem Lula em relação à média; negativos favorecem Flávio. <b>Não representam votos inválidos nem alteração comprovada.</b> A mudança no saldo entre turnos inclui votos de candidatos eliminados, comparecimento e mudanças de voto, não transferências individuais.</p>
    </>}
   </>:<>
-   <div className="forensic-official-reference"><AlertCircle size={18}/><div><b>Referência nacional divulgada pela Justiça Eleitoral</b><p>No 2º turno, o TSE informou 110 seções com todos os votos válidos para um candidato: <b>106 para Lula (14.860 votos)</b> e <b>4 para Flávio (296 votos)</b>, entre 499.205 seções com votos. Trata-se de uma referência publicada pelo TSE, não da análise dos seus arquivos importados.</p><a href={TSE_REPORT} target="_blank" rel="noreferrer">Ver levantamento oficial <ExternalLink size={13}/></a></div></div>
+   <div className="forensic-official-reference"><AlertCircle size={18}/><div><b>Referência nacional divulgada pela Justiça Eleitoral</b><p>No 2º turno, o TSE informou 110 seções com todos os votos válidos para um candidato: <b>106 para Lula (14.860 votos)</b> e <b>4 para Flávio (296 votos)</b>, entre 499.205 seções com votos. A diferença líquida dessas seções foi de <b>14.564 votos</b>{nationalGap!==0?' (equivalente a '+pct(100*14564/Math.abs(nationalGap))+' da margem nacional)':''}. Isso quantifica sua contribuição, não implica irregularidade. Trata-se de uma referência publicada pelo TSE, não da análise dos seus arquivos importados.</p><a href={TSE_REPORT} target="_blank" rel="noreferrer">Ver levantamento oficial <ExternalLink size={13}/></a></div></div>
    <p className="muted">Para identificar cada urna e calcular o impacto, importe os CSVs descompactados do TSE. O processamento ocorre <b>no seu navegador</b>; os arquivos não são enviados ao servidor.</p>
    <div className="forensic-upload-grid">{([1,2] as const).map(round=><label className="forensic-upload" key={round}><UploadCloud size={22}/><b>{round}º turno</b><small>{imports[round]?imports[round]!.fileName:importBusy===round?'Lendo arquivo '+progress+'%':'Selecionar arquivo .CSV'}</small><input type="file" accept=".csv,.txt,text/csv" disabled={importBusy!==null} onChange={e=>{void onImport(e.target.files?.[0],round);e.target.value=''}}/><span>{imports[round]?fmt(imports[round]!.sections.length)+' seções lidas':'Escolher CSV descompactado'}</span></label>)}</div>
    {importBusy&&<div className="forensic-progress" role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100}><span style={{width:progress+'%'}}/></div>}
