@@ -98,7 +98,7 @@ export default function ForensicDeepDive({currentUf,nation}:{currentUf:string;na
   const comparison=source.map(s=>({section:s,previous:prior.get(s.key),valid:s.lula+s.flavio,margin:s.lula-s.flavio,delta:prior.has(s.key)?s.lula-s.flavio-(prior.get(s.key)!.lula-prior.get(s.key)!.flavio):null})).filter(x=>x.valid>0);
   const filtered=comparison.filter(x=>(sectionMode==='exclusive'?x.valid>=minValid&&(x.section.lula===0||x.section.flavio===0):sectionMode==='near'?x.valid>=minValid&&Math.max(x.section.lula,x.section.flavio)/x.valid>=.95:true)&&(!zoneQuery||[x.section.zone,x.section.municipality,x.section.municipalityCode,x.section.section].join(' ').toLocaleLowerCase('pt-BR').includes(zoneQuery.toLocaleLowerCase('pt-BR'))));
   filtered.sort((a,b)=>sectionMode==='all'?Math.abs(b.delta||b.margin)-Math.abs(a.delta||a.margin):b.valid-a.valid);
-  return {totalValid,margin,exclusive,near,comparison,filtered:filtered.slice(0,100),filteredCount:filtered.length,matchCount:comparison.filter(x=>x.previous).length};
+  return {totalValid,margin,exclusive,near,comparison,filtered:filtered.slice(0,100),allFiltered:filtered,filteredCount:filtered.length,matchCount:comparison.filter(x=>x.previous).length};
  },[imports,minValid,sectionMode,zoneQuery]);
  const exportRows=()=>{
   if(!imports[2]||!sections.filteredCount)return;
@@ -178,7 +178,7 @@ export default function ForensicDeepDive({currentUf,nation}:{currentUf:string;na
      <div className="forensic-duo"><span style={{color:C13}}>Lula {fmt(s.lula)}</span><span style={{color:C22}}>Flávio {fmt(s.flavio)}</span></div>
      <div className="forensic-rowmetrics"><span>Válidos <b>{fmt(valid)}</b></span><span>Saldo 2º turno <b>{signed(margin)}</b></span><span>Mudança no saldo 1º → 2º <b>{signed(delta)}</b></span><span>Brancos / nulos <b>{fmt(s.blank)} / {fmt(s.nullVotes)}</b></span></div>
     </div>)}</div>
-    {sections.filteredCount>100&&<p className="footnote">Exibindo 100 de {fmt(sections.filteredCount)} seções filtradas. O CSV exportado contém essas 100 linhas visíveis.</p>}
+    {sections.filteredCount>100&&<p className="footnote">Exibindo 100 de {fmt(sections.filteredCount)} seções filtradas. O CSV exportado inclui todas as seções encontradas pelo filtro.</p>}
     <p className="footnote">Seção com 100% para um dos dois candidatos significa zero votos válidos para o outro. Comparecimento, brancos e nulos podem existir. Saldo = Lula − Flávio; variação do saldo = saldo no 2º turno − saldo no 1º, quando há correspondência de seção. O arquivo importado não é verificado criptograficamente; confira cada caso no BU oficial. Um padrão extremo não constitui prova de irregularidade.</p>
    </>:<p className="forensic-empty">Importe ao menos o CSV do 2º turno para ver as urnas, os casos unânimes e os impactos. Adicione o 1º turno para medir a mudança entre as duas votações.</p>}
   </>}
